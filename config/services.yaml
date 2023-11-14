@@ -26,7 +26,7 @@ services:
     admin.product:
         class: App\Admin\ProductAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Product, controller: App\Controller\ProductAdminController, manager_type: orm, group: admin, label: Product }
+            - { name: sonata.admin, model_class: App\Entity\Product, controller: App\Controller\ProductAdminController, manager_type: orm, group: Product, label: Product, on_top: true }
 
     admin.stock_entry:
         class: App\Admin\StockEntryAdmin
