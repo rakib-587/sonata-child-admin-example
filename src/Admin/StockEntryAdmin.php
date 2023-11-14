@@ -41,7 +41,6 @@ final class StockEntryAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('id')
             ->add('entryType')
             ->add('quantity')
             ->add('stock')
