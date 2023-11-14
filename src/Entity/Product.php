@@ -16,6 +16,14 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private ?Inventory $inventory = null;
+
+    public function __construct()
+    {
+        $this->createInventory();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,5 +39,29 @@ class Product
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getInventory(): ?Inventory
+    {
+        return $this->inventory;
+    }
+
+    public function setInventory(Inventory $inventory): static
+    {
+        // set the owning side of the relation if necessary
+        if ($inventory->getProduct() !== $this) {
+            $inventory->setProduct($this);
+        }
+
+        $this->inventory = $inventory;
+
+        return $this;
+    }
+
+    public function createInventory(): void
+    {
+        if (null == $this->inventory) {
+            $this->inventory = new Inventory($this);
+        }
     }
 }
