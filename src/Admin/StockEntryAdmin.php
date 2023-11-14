@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\StockEntry;
+use App\Enum\StockEntryTypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 final class StockEntryAdmin extends AbstractAdmin
 {
+    protected function createNewInstance(): object
+    {
+        return new StockEntry();
+    }
+
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -41,9 +50,10 @@ final class StockEntryAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('entryType')
+            ->add('entryType', EnumType::class, [
+                'class' => StockEntryTypeEnum::class
+            ])
             ->add('quantity')
-            ->add('stock')
         ;
     }
 
@@ -55,5 +65,15 @@ final class StockEntryAdmin extends AbstractAdmin
             ->add('quantity')
             ->add('stock')
         ;
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        if ($this->isChild()) {
+            return;
+        }
+
+        // This is the route configuration as a parent
+        $collection->clear();
     }
 }

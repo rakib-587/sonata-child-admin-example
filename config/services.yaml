@@ -25,6 +25,8 @@ services:
 
     admin.product:
         class: App\Admin\ProductAdmin
+        calls:
+            - [addChild, ['@admin.stock_entry', 'inventory.product']]
         tags:
             - { name: sonata.admin, model_class: App\Entity\Product, controller: App\Controller\ProductAdminController, manager_type: orm, group: Product, label: Product, on_top: true }
 
